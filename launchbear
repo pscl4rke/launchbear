@@ -9,7 +9,9 @@ allows them to be picked using a front-end.
 """
 
 
+import os
 import shlex
+import subprocess
 
 
 class ChoiceGenerator:
@@ -53,12 +55,17 @@ class ChoiceGenerator:
 
 
 def main():
-    generator = ChoiceGenerator()
-    infile = open("test")
-    generator.parse(infile)
-    choices_available = generator.choices()
-    for choice_id in choices_available:
-        print "%s {%s}" % (choices_available[choice_id]["title"], choice_id)
+    backend_names = os.listdir("backends")
+    for backend_name in backend_names:
+        backend_location = os.path.join("backends", backend_name)
+        generator = ChoiceGenerator()
+        process = subprocess.Popen(backend_location,
+                    stdout=subprocess.PIPE, shell=True)
+        infile = process.stdout
+        generator.parse(infile)
+        choices_available = generator.choices()
+        for choice_id in choices_available:
+            print "%s {%s}" % (choices_available[choice_id]["title"], choice_id)
 
 
 if __name__ == '__main__':
