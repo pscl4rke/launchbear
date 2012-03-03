@@ -72,7 +72,13 @@ class DmenuFrontend:
                 continue
             parts.append("||| %s" % choice_id)
             lines.append(" ".join(parts))
-        process = subprocess.Popen("dmenu",
+        command = [
+            "dmenu", "-l", "6",
+            "-fn", "-*-arial-*-r-*-*-*-*-*-*-*-*-*",
+            "-nb", "#444", "-nf", "#DDD", "-sb", "#757",
+            "-p", "Run:",
+        ]
+        process = subprocess.Popen(command,
                     stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         stdout, stderr = process.communicate("\n".join(lines))
         if len(stdout) == 0:
