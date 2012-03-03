@@ -1,0 +1,66 @@
+#!/usr/bin/env python
+
+"""
+//  LAUNCHBEAR
+
+Launchbear is a piece of middleware designed to launch applications
+in a GUI environment.  It takes selectable items from plugins, and
+allows them to be picked using a front-end.
+"""
+
+
+import shlex
+
+
+class ChoiceGenerator:
+    """A backend that provides a number of choices."""
+
+    def __init__(self):
+        """Create a new ChoiceGenerator."""
+        self._choices = []
+
+    def choices(self):
+        """Returns a set of choices."""
+        choices_available = {}
+        for choice in self._choices:
+            if "id" not in choice:
+                continue
+            choices_available[choice["id"]] = choice
+        return choices_available
+
+    def parse(self, stream):
+        """Build a set of choices from a file stream."""
+        for line in stream.readlines():
+            arguments = shlex.split(line, comments=True)
+            if len(arguments) == 0:
+                continue
+            handler_name = "handle_%s" % arguments[0]
+            if not hasattr(self, handler_name):
+                print "Unknown directive '%s'" % arguments[0]
+            else:
+                getattr(self, handler_name)(arguments[1:])
+
+    def handle_addchoice(self, arguments):
+        choice_properties = {}
+        for argument in arguments:
+            if not argument.startswith("--"):
+                continue
+            dashed_key, equals, value = argument.partition("=")
+            if equals != "=":
+                continue
+            choice_properties[dashed_key[2:]] = value
+        self._choices.append(choice_properties)
+
+
+def main():
+    generator = ChoiceGenerator()
+    infile = open("test")
+    generator.parse(infile)
+    choices_available = generator.choices()
+    for choice_id in choices_available:
+        print "%s {%s}" % (choices_available[choice_id]["title"], choice_id)
+
+
+if __name__ == '__main__':
+    main()
+

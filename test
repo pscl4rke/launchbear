@@ -1,0 +1,7 @@
+
+# These are some choices
+
+addchoice --id=foo --title="This is a foo" --cmd=foo
+addchoice --id=bar --title="This is a bar" --cmd=bar
+
+
