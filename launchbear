@@ -54,8 +54,36 @@ class ChoiceGenerator:
         self._choices.append(choice_properties)
 
 
+class DmenuFrontend:
+    """A picker based around dmenu."""
+
+    def pick(self, choices):
+        """Presents the choices and returns the id chosen or None."""
+        lines = []
+        for choice_id in choices:
+            parts = []
+            choice = choices[choice_id]
+            if 'title' in choice:
+                parts.append(choice['title'])
+            if 'cmd' not in choice:
+                continue
+            parts.append("(%s)" % choice['cmd'])
+            if 'id' not in choice:
+                continue
+            parts.append("||| %s" % choice_id)
+            lines.append(" ".join(parts))
+        process = subprocess.Popen("dmenu",
+                    stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        stdout, stderr = process.communicate("\n".join(lines))
+        if len(stdout) == 0:
+            return None
+        rest, bars, choice_id = stdout.partition("||| ")
+        return choice_id
+
+
 def main():
     backend_names = os.listdir("backends")
+    all_choices = {}
     for backend_name in backend_names:
         backend_location = os.path.join("backends", backend_name)
         generator = ChoiceGenerator()
@@ -64,8 +92,12 @@ def main():
         infile = process.stdout
         generator.parse(infile)
         choices_available = generator.choices()
-        for choice_id in choices_available:
-            print "%s {%s}" % (choices_available[choice_id]["title"], choice_id)
+        all_choices.update(choices_available)
+    frontend = DmenuFrontend()
+    choice_id = frontend.pick(all_choices)
+    if choice_id is not None:
+        print choice_id
+        print all_choices[choice_id]['cmd']
 
 
 if __name__ == '__main__':
