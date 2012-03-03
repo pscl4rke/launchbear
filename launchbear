@@ -102,8 +102,8 @@ def main():
     frontend = DmenuFrontend()
     choice_id = frontend.pick(all_choices)
     if choice_id is not None:
-        print choice_id
-        print all_choices[choice_id]['cmd']
+        command = "%s &" % all_choices[choice_id]['cmd']
+        subprocess.call(command, shell=True)
 
 
 if __name__ == '__main__':
