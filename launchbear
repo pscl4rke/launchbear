@@ -73,7 +73,7 @@ class DmenuFrontend:
             parts.append("||| %s" % choice_id)
             lines.append(" ".join(parts))
         command = [
-            "dmenu", "-l", "6",
+            "dmenu", "-i", "-l", "6",
             "-fn", "-*-arial-*-r-*-*-*-*-*-*-*-*-*",
             "-nb", "#444", "-nf", "#DDD", "-sb", "#757",
             "-p", "Run:",
