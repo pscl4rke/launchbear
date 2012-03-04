@@ -88,10 +88,12 @@ class DmenuFrontend:
 
 
 def main():
-    backend_names = os.listdir("backends")
+    homedir = os.environ['HOME']
+    backend_home = os.path.join(homedir, ".launchbear/backends")
+    backend_names = os.listdir(backend_home)
     all_choices = {}
     for backend_name in backend_names:
-        backend_location = os.path.join("backends", backend_name)
+        backend_location = os.path.join(backend_home, backend_name)
         generator = ChoiceGenerator()
         process = subprocess.Popen(backend_location,
                     stdout=subprocess.PIPE, shell=True)
@@ -108,4 +110,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
 
