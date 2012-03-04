@@ -4,8 +4,7 @@
 import os
 
 
-def main():
-    location = "/var/lib/menu-xdg/applications/menu-xdg"
+def scan(location):
     filenames = os.listdir(location)
     for filename in filenames:
         if not filename.endswith(".desktop"):
@@ -25,6 +24,15 @@ def main():
             "--title='%s'" % properties['Name'],
             "--cmd='%s'" % properties['Exec'],
         ))
+
+
+def main():
+    locations = [
+        "/var/lib/menu-xdg/applications/menu-xdg",
+        "/usr/share/applications/",
+    ]
+    for location in locations:
+        scan(location)
 
 
 if __name__ == '__main__':
