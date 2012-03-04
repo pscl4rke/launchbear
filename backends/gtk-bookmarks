@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+cat "$HOME/.gtk-bookmarks" | while read location name
+do
+    [ -z "$name" ] && name="$(basename $location)"
+    echo -n "addchoice"
+    echo -n " --id='bookmark-$name'"
+    echo -n " --title='Open $name'"
+    echo -n " --cmd='xdg-open $location'"
+    echo
+done
+
