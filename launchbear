@@ -12,6 +12,10 @@ allows them to be picked using a front-end.
 import os
 import shlex
 import subprocess
+try:
+    import cPickle as pickle
+except ImportError as e:
+    import pickle
 
 
 class ChoiceGenerator:
@@ -41,6 +45,19 @@ class ChoiceGenerator:
                 print "Unknown directive '%s'" % arguments[0]
             else:
                 getattr(self, handler_name)(arguments[1:])
+
+    def load(self, cached_data):
+        """Build a set of choices from previously cached data."""
+        if 'choices' in cached_data:
+            self._choices = cached_data['choices']
+        else:
+            self._choices = {}
+
+    def save(self):
+        """Returns the cache form that can be loaded."""
+        return {
+            'choices': self._choices,
+        }
 
     def handle_addchoice(self, arguments):
         choice_properties = {}
@@ -87,20 +104,47 @@ class DmenuFrontend:
         return choice_id
 
 
+def load_cachefile():
+    """Return the cached data, or blank data."""
+    homedir = os.environ['HOME']
+    cache_path = os.path.join(homedir, ".launchbear/cache.pkl")
+    if os.path.exists(cache_path):
+        cache_file = open(cache_path)
+        return pickle.load(cache_file)
+    return {
+        'generators': {},
+    }
+
+
+def save_cachefile(cache):
+    """Saves the given cache to disk."""
+    homedir = os.environ['HOME']
+    cache_path = os.path.join(homedir, ".launchbear/cache.pkl")
+    cache_file = open(cache_path, "w")
+    pickle.dump(cache, cache_file)
+    cache_file.close()
+
+
 def main():
     homedir = os.environ['HOME']
     backend_home = os.path.join(homedir, ".launchbear/backends")
     backend_names = os.listdir(backend_home)
+    cache = load_cachefile()
     all_choices = {}
     for backend_name in backend_names:
-        backend_location = os.path.join(backend_home, backend_name)
         generator = ChoiceGenerator()
-        process = subprocess.Popen(backend_location,
-                    stdout=subprocess.PIPE, shell=True)
-        infile = process.stdout
-        generator.parse(infile)
+        if backend_name in cache['generators']:
+            generator.load(cache['generators'][backend_name])
+        else:
+            backend_location = os.path.join(backend_home, backend_name)
+            process = subprocess.Popen(backend_location,
+                        stdout=subprocess.PIPE, shell=True)
+            infile = process.stdout
+            generator.parse(infile)
+            cache['generators'][backend_name] = generator.save()
         choices_available = generator.choices()
         all_choices.update(choices_available)
+    save_cachefile(cache)
     frontend = DmenuFrontend()
     choice_id = frontend.pick(all_choices)
     if choice_id is not None:
