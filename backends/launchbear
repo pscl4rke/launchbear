@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+cat <<EOF
+
+# Launchbear 'builtins'
+
+addchoice --id='launchbear-flush' --title='Reload the launchbear plugins' --cmd='rm $HOME/.launchbear/cache.pkl'
+
+EOF
