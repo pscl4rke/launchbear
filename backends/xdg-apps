@@ -5,6 +5,7 @@ import os
 
 
 def scan(location):
+    print "# Files in %s" % location
     filenames = os.listdir(location)
     for filename in filenames:
         if not filename.endswith(".desktop"):
