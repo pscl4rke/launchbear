@@ -32,7 +32,8 @@ def main():
         "/usr/share/applications/",
     ]
     for location in locations:
-        scan(location)
+        if os.path.isdir(location):
+            scan(location)
 
 
 if __name__ == '__main__':
