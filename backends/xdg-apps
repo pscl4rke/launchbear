@@ -8,23 +8,30 @@ def scan(location):
     print "# Files in %s" % location
     filenames = os.listdir(location)
     for filename in filenames:
-        if not filename.endswith(".desktop"):
-            continue
         filepath = os.path.join(location, filename)
-        fileobj = open(filepath)
-        properties = {}
-        for line in fileobj.readlines():
-            key, equals, value = line.strip().partition("=")
-            if equals != "=":
-                continue
-            properties[key] = value
-        fileobj.close()
-        print " ".join((
-            "addchoice",
-            "--id='%s'" % filename,
-            "--title='%s'" % properties['Name'],
-            "--cmd='%s'" % properties['Exec'],
-        ))
+        if os.path.isdir(filepath):
+            scan(filepath)
+        elif filename.endswith(".desktop"):
+            use_desktop_file(filepath)
+        else:
+            pass
+
+
+def use_desktop_file(filepath):
+    fileobj = open(filepath)
+    properties = {}
+    for line in fileobj.readlines():
+        key, equals, value = line.strip().partition("=")
+        if equals != "=":
+            continue
+        properties[key] = value
+    fileobj.close()
+    print " ".join((
+        "addchoice",
+        "--id='%s'" % filepath,
+        "--title='%s'" % properties['Name'],
+        "--cmd='%s'" % properties['Exec'],
+    ))
 
 
 def main():
