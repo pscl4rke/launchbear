@@ -2,6 +2,7 @@
 
 
 import os
+import subprocess
 
 
 print
@@ -34,6 +35,8 @@ backend_src = os.path.join(root_src, 'backends')
 
 
 for backend_name in os.listdir(backend_src):
+    src = os.path.join(backend_src, backend_name)
+    dest = os.path.join(backend_dir, backend_name)
     answer = ''
     while answer not in ('y', 'n'):
         print
@@ -41,10 +44,9 @@ for backend_name in os.listdir(backend_src):
         prt = "[y]es, [n]o or [v]iew in your pager... "
         answer = raw_input(prt).lower()[:1]
         if answer == 'v':
-            print "Cannot currently view: umimplemented!"
+            PAGER = os.environ.get('PAGER', 'less')
+            subprocess.call([PAGER, src])
     if answer == 'y':
-        src = os.path.join(backend_src, backend_name)
-        dest = os.path.join(backend_dir, backend_name)
         os.symlink(src, dest)
         print "Created", dest
 
