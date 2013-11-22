@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 
 
+# This parses .desktop files used by the XDG spec.
+# NOTE: It does it *very* crudely, and consequently can't
+# handle one file containing multiple definitions.
+# e.g. /usr/share/applications/chromium-browser.desktop.
+
+
 import os
 
 
