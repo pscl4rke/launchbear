@@ -44,7 +44,8 @@ def subst_cleanse(command):
     inchars, outchars = iter(command), []
     for char in inchars:
         if char == '%':
-            next(inchars)
+            if next(inchars) == "%":
+                outchars.append("%")
         else:
             outchars.append(char)
     return "".join(outchars)
