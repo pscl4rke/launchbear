@@ -100,7 +100,7 @@ class DmenuFrontend:
         stdout, stderr = process.communicate("\n".join(lines))
         if len(stdout) == 0:
             return None
-        rest, bars, choice_id = stdout.partition("||| ")
+        rest, bars, choice_id = stdout.strip().partition("||| ")
         return choice_id
 
 
