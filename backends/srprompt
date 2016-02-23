@@ -1,0 +1,5 @@
+#!/bin/bash
+surfraw -elvi | grep '.*--.*' | while read elvus dashes desc; do
+    echo "addchoice --id='srprompt-$elvus' --title=\"$desc\"" \
+         "--cmd='/home/psc/imemine/bin/srprompt $elvus'"
+done
