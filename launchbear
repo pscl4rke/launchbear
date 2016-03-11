@@ -18,6 +18,37 @@ except ImportError as e:
     import pickle
 
 
+class HistoryFile:
+    """Tracks what has been launched to order by popularity."""
+
+    max_history = 500
+
+    def __init__(self):
+        self.location = os.path.join(os.environ['HOME'], ".launchbear", "history")
+        self.history = []
+        try:
+            with open(self.location) as infile:
+                for line in infile:
+                    self.history.append(line.strip())
+        except IOError:
+            pass # presumably doesn't exist yet
+
+    def update(self, choice_id):
+        self.history.append(choice_id)
+        if len(self.history) > self.max_history:
+            self.history.pop(0)
+        with open(self.location, 'w') as outfile:
+            for choice_id in self.history:
+                outfile.write("%s\n" % choice_id)
+
+    def score(self, choice_id):
+        score = 0
+        for previous in self.history:
+            if previous == choice_id:
+                score += 1
+        return score
+
+
 class ChoiceGenerator:
     """A backend that provides a number of choices."""
 
@@ -77,9 +108,8 @@ class DmenuFrontend:
     def pick(self, choices):
         """Presents the choices and returns the id chosen or None."""
         lines = []
-        for choice_id in choices:
+        for choice in choices:
             parts = []
-            choice = choices[choice_id]
             if 'title' in choice:
                 parts.append(choice['title'])
             if 'cmd' not in choice:
@@ -87,7 +117,7 @@ class DmenuFrontend:
             parts.append("(%s)" % choice['cmd'])
             if 'id' not in choice:
                 continue
-            parts.append("||| %s" % choice_id)
+            parts.append("||| %s" % choice['id'])
             lines.append(" ".join(parts))
         command = [
             "dmenu", "-i", "-l", "6",
@@ -130,6 +160,7 @@ def main():
     backend_home = os.path.join(homedir, ".launchbear/backends")
     backend_names = os.listdir(backend_home)
     cache = load_cachefile()
+    history = HistoryFile()
     all_choices = {}
     for backend_name in backend_names:
         generator = ChoiceGenerator()
@@ -146,8 +177,11 @@ def main():
         all_choices.update(choices_available)
     save_cachefile(cache)
     frontend = DmenuFrontend()
-    choice_id = frontend.pick(all_choices)
+    sortable_choices = [(history.score(x['id']), x) for x in all_choices.values()]
+    sortable_choices.sort(reverse=True)
+    choice_id = frontend.pick(y for (i, y) in sortable_choices)
     if choice_id is not None:
+        history.update(choice_id)
         command = "%s &" % all_choices[choice_id]['cmd']
         subprocess.call(command, shell=True)
 
