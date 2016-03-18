@@ -30,8 +30,9 @@ else:
     print "created", backend_dir
 
 
-root_src = os.path.dirname(os.path.realpath(__file__))
-backend_src = os.path.join(root_src, 'backends')
+#root_src = os.path.dirname(os.path.realpath(__file__))
+#backend_src = os.path.join(root_src, 'backends')
+backend_src = "/usr/share/launchbear/backends"
 
 
 for backend_name in os.listdir(backend_src):
