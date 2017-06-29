@@ -3,6 +3,7 @@
 
 import os
 import subprocess
+import sys
 
 
 class Wizard:
@@ -30,10 +31,7 @@ class Wizard:
             os.mkdir(self.backend_dir)
             print "created %s" % self.backend_dir
 
-    def ask_about_each_backend(self):
-        #root_src = os.path.dirname(os.path.realpath(__file__))
-        #backend_src = os.path.join(root_src, 'backends')
-        backend_src = "/usr/share/launchbear/backends"
+    def offer_to_symlink_backends_from(self, backend_src):
         for backend_name in os.listdir(backend_src):
             src = os.path.join(backend_src, backend_name)
             dest = os.path.join(self.backend_dir, backend_name)
@@ -63,7 +61,11 @@ class Wizard:
     def main(self):
         self.print_welcome()
         self.create_config_dirs()
-        self.ask_about_each_backend()
+        if len(sys.argv) == 2:
+            backend_src = os.path.realpath(sys.argv[1])
+        else:
+            backend_src = "/usr/share/launchbear/backends"
+        self.offer_to_symlink_backends_from(backend_src)
         self.wipe_the_cache()
 
 
