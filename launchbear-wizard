@@ -7,36 +7,36 @@ import subprocess
 
 class Wizard:
 
-    def main(self):
+    def __init__(self):
+        HOME = os.environ['HOME']
+        self.config_dir = os.path.join(HOME, '.launchbear')
+        self.backend_dir = os.path.join(HOME, '.launchbear', 'backends')
 
+    def print_welcome(self):
         print
         print "This script will take the user through setting"
         print "up their personal preferences for launchbear."
         print
 
-        HOME = os.environ['HOME']
-
-        config_dir = os.path.join(HOME, '.launchbear')
-        if os.path.isdir(config_dir):
-            print config_dir, "already exists"
+    def create_config_dirs(self):
+        if os.path.isdir(self.config_dir):
+            print "%s already exists" % self.config_dir
         else:
-            os.mkdir(config_dir)
-            print "created", config_dir
-
-        backend_dir = os.path.join(HOME, '.launchbear', 'backends')
-        if os.path.isdir(backend_dir):
-            print backend_dir, "already exists"
+            os.mkdir(self.config_dir)
+            print "created %s" % self.config_dir
+        if os.path.isdir(self.backend_dir):
+            print "%s already exists" % self.backend_dir
         else:
-            os.mkdir(backend_dir)
-            print "created", backend_dir
+            os.mkdir(self.backend_dir)
+            print "created %s" % self.backend_dir
 
+    def ask_about_each_backend(self):
         #root_src = os.path.dirname(os.path.realpath(__file__))
         #backend_src = os.path.join(root_src, 'backends')
         backend_src = "/usr/share/launchbear/backends"
-
         for backend_name in os.listdir(backend_src):
             src = os.path.join(backend_src, backend_name)
-            dest = os.path.join(backend_dir, backend_name)
+            dest = os.path.join(self.backend_dir, backend_name)
             answer = ''
             while answer not in ('y', 'n'):
                 print
@@ -50,15 +50,21 @@ class Wizard:
                 os.symlink(src, dest)
                 print "Created", dest
 
+    def wipe_the_cache(self):
         print
-        cache_file = os.path.join(config_dir, 'cache.pkl')
+        cache_file = os.path.join(self.config_dir, 'cache.pkl')
         if os.path.exists(cache_file):
             os.remove(cache_file)
             print "Removed cache file", cache_file
         else:
             print "There is no cache file"
-
         print
+
+    def main(self):
+        self.print_welcome()
+        self.create_config_dirs()
+        self.ask_about_each_backend()
+        self.wipe_the_cache()
 
 
 if __name__ == '__main__':
