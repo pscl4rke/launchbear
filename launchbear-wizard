@@ -5,63 +5,61 @@ import os
 import subprocess
 
 
-print
-print "This script will take the user through setting"
-print "up their personal preferences for launchbear."
-print
+class Wizard:
 
+    def main(self):
 
-HOME = os.environ['HOME']
-
-
-config_dir = os.path.join(HOME, '.launchbear')
-if os.path.isdir(config_dir):
-    print config_dir, "already exists"
-else:
-    os.mkdir(config_dir)
-    print "created", config_dir
-
-
-backend_dir = os.path.join(HOME, '.launchbear', 'backends')
-if os.path.isdir(backend_dir):
-    print backend_dir, "already exists"
-else:
-    os.mkdir(backend_dir)
-    print "created", backend_dir
-
-
-#root_src = os.path.dirname(os.path.realpath(__file__))
-#backend_src = os.path.join(root_src, 'backends')
-backend_src = "/usr/share/launchbear/backends"
-
-
-for backend_name in os.listdir(backend_src):
-    src = os.path.join(backend_src, backend_name)
-    dest = os.path.join(backend_dir, backend_name)
-    answer = ''
-    while answer not in ('y', 'n'):
         print
-        print "Do you want to install %s?" % backend_name
-        prt = "[y]es, [n]o or [v]iew in your pager... "
-        answer = raw_input(prt).lower()[:1]
-        if answer == 'v':
-            PAGER = os.environ.get('PAGER', 'less')
-            subprocess.call([PAGER, src])
-    if answer == 'y':
-        os.symlink(src, dest)
-        print "Created", dest
+        print "This script will take the user through setting"
+        print "up their personal preferences for launchbear."
+        print
+
+        HOME = os.environ['HOME']
+
+        config_dir = os.path.join(HOME, '.launchbear')
+        if os.path.isdir(config_dir):
+            print config_dir, "already exists"
+        else:
+            os.mkdir(config_dir)
+            print "created", config_dir
+
+        backend_dir = os.path.join(HOME, '.launchbear', 'backends')
+        if os.path.isdir(backend_dir):
+            print backend_dir, "already exists"
+        else:
+            os.mkdir(backend_dir)
+            print "created", backend_dir
+
+        #root_src = os.path.dirname(os.path.realpath(__file__))
+        #backend_src = os.path.join(root_src, 'backends')
+        backend_src = "/usr/share/launchbear/backends"
+
+        for backend_name in os.listdir(backend_src):
+            src = os.path.join(backend_src, backend_name)
+            dest = os.path.join(backend_dir, backend_name)
+            answer = ''
+            while answer not in ('y', 'n'):
+                print
+                print "Do you want to install %s?" % backend_name
+                prt = "[y]es, [n]o or [v]iew in your pager... "
+                answer = raw_input(prt).lower()[:1]
+                if answer == 'v':
+                    PAGER = os.environ.get('PAGER', 'less')
+                    subprocess.call([PAGER, src])
+            if answer == 'y':
+                os.symlink(src, dest)
+                print "Created", dest
+
+        print
+        cache_file = os.path.join(config_dir, 'cache.pkl')
+        if os.path.exists(cache_file):
+            os.remove(cache_file)
+            print "Removed cache file", cache_file
+        else:
+            print "There is no cache file"
+
+        print
 
 
-print
-cache_file = os.path.join(config_dir, 'cache.pkl')
-if os.path.exists(cache_file):
-    os.remove(cache_file)
-    print "Removed cache file", cache_file
-else:
-    print "There is no cache file"
-
-
-print
-
-
-
+if __name__ == '__main__':
+    Wizard().main()
