@@ -1,0 +1,17 @@
+Source: launchbear
+Section: x11
+Priority: optional
+Maintainer: P. S. Clarke <debs@pscl4rke.net>
+Build-Depends: debhelper (>=9)
+Standards-Version: 3.9.6
+Homepage: http://github.com/pscl4rke/launchbear
+#Vcs-Git: git://anonscm.debian.org/collab-maint/launchbear.git
+#Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/launchbear.git
+
+Package: launchbear
+Architecture: all
+Depends: ${misc:Depends}, python2, suckless-tools
+Recommends: less, bash (>= 0)
+Description: Extensible program launcher
+ Launchbear provides a language-agnostic framework for feeding options
+ into a menu (by default dmenu), and then launching what the user selected.

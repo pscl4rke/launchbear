@@ -1,0 +1,5 @@
+debian/debhelper-build-stamp
+debian/files
+debian/launchbear
+debian/launchbear.debhelper.log
+debian/launchbear.substvars
