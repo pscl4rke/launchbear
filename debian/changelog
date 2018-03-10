@@ -1,3 +1,9 @@
+launchbear (1.0.3) unstable; urgency=medium
+
+  * Fix python2 dependency.
+
+ -- P. S. Clarke <debs@pscl4rke.net>  Sat, 10 Mar 2018 18:08:52 +0000
+
 launchbear (1.0.2) unstable; urgency=medium
 
   * Add README and license with the GPLv3.
