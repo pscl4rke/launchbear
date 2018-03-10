@@ -1,3 +1,10 @@
+launchbear (1.0.2) UNRELEASED; urgency=medium
+
+  * Add README and license with the GPLv3.
+  * Add manpages for the binaries.
+
+ -- P. S. Clarke <debs@pscl4rke.net>  Sat, 10 Mar 2018 14:57:06 +0000
+
 launchbear (1.0.1) unstable; urgency=medium
 
   * Fix dependency from python2 to python2.7
