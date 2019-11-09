@@ -134,25 +134,28 @@ class DmenuFrontend:
         return choice_id
 
 
-def load_cachefile():
+def default_cache_path():
+    homedir = os.environ['HOME']
+    return os.path.join(homedir, ".launchbear/cache.pkl")
+
+
+def load_cachefile(cache_path=None):
     """Return the cached data, or blank data."""
-    homedir = os.environ['HOME']
-    cache_path = os.path.join(homedir, ".launchbear/cache.pkl")
-    if os.path.exists(cache_path):
-        cache_file = open(cache_path)
-        return pickle.load(cache_file)
-    return {
-        'generators': {},
-    }
+    if cache_path is None:
+        cache_path = default_cache_path()
+    try:
+        with open(cache_path) as cache_file:
+            return pickle.load(cache_file)
+    except Exception:
+        return {'generators': {}}
 
 
-def save_cachefile(cache):
+def save_cachefile(cache, cache_path=None):
     """Saves the given cache to disk."""
-    homedir = os.environ['HOME']
-    cache_path = os.path.join(homedir, ".launchbear/cache.pkl")
-    cache_file = open(cache_path, "w")
-    pickle.dump(cache, cache_file)
-    cache_file.close()
+    if cache_path is None:
+        cache_path = default_cache_path()
+    with open(cache_path, "w") as cache_file:
+        pickle.dump(cache, cache_file)
 
 
 def main():
