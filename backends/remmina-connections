@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 
 import sys
 import os
@@ -21,7 +21,5 @@ for conn_filename in os.listdir(conn_dir):
         settings[key] = value.strip()
     title = "Connect to %s at %s with %s" % \
                tuple(settings[k] for k in ('name', 'server', 'protocol'))
-    print """addchoice --id="remmina-%s" --title="%s" --cmd='remmina -c %s'""" % \
-            (conn_filename, title, conn_filepath)
-
-
+    print("""addchoice --id="remmina-%s" --title="%s" --cmd='remmina -c %s'""" %
+            (conn_filename, title, conn_filepath))

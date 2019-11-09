@@ -1,3 +1,9 @@
+launchbear (2.0.0) unstable; urgency=medium
+
+  * Switch from Python 2 to Python 3.
+
+ -- P. S. Clarke <debs@pscl4rke.net>  Sat, 09 Nov 2019 14:50:38 +0000
+
 launchbear (1.0.4) unstable; urgency=medium
 
   * Use HTTPS for home page URLs.

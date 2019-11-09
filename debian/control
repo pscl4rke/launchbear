@@ -8,7 +8,7 @@ Homepage: https://github.com/pscl4rke/launchbear
 
 Package: launchbear
 Architecture: all
-Depends: ${misc:Depends}, python2.7, suckless-tools
+Depends: ${misc:Depends}, python3, suckless-tools
 Recommends: less, bash (>= 0)
 Description: Extensible program launcher
  Launchbear provides a language-agnostic framework for feeding options

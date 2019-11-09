@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 
 """
 //  LAUNCHBEAR
@@ -68,12 +68,12 @@ class ChoiceGenerator:
     def parse(self, stream):
         """Build a set of choices from a file stream."""
         for line in stream.readlines():
-            arguments = shlex.split(line, comments=True)
+            arguments = shlex.split(line.decode(), comments=True)
             if len(arguments) == 0:
                 continue
             handler_name = "handle_%s" % arguments[0]
             if not hasattr(self, handler_name):
-                print "Unknown directive '%s'" % arguments[0]
+                print("Unknown directive '%s'" % arguments[0])
             else:
                 getattr(self, handler_name)(arguments[1:])
 
@@ -127,10 +127,10 @@ class DmenuFrontend:
         ]
         process = subprocess.Popen(command,
                     stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-        stdout, stderr = process.communicate("\n".join(lines))
+        stdout, stderr = process.communicate(("\n".join(lines)).encode())
         if len(stdout) == 0:
             return None
-        rest, bars, choice_id = stdout.strip().partition("||| ")
+        rest, bars, choice_id = stdout.strip().decode().partition("||| ")
         return choice_id
 
 
@@ -154,7 +154,7 @@ def save_cachefile(cache, cache_path=None):
     """Saves the given cache to disk."""
     if cache_path is None:
         cache_path = default_cache_path()
-    with open(cache_path, "w") as cache_file:
+    with open(cache_path, "wb") as cache_file:
         pickle.dump(cache, cache_file)
 
 
@@ -180,9 +180,11 @@ def main():
         all_choices.update(choices_available)
     save_cachefile(cache)
     frontend = DmenuFrontend()
-    sortable_choices = [(history.score(x['id']), x) for x in all_choices.values()]
-    sortable_choices.sort(reverse=True)
-    choice_id = frontend.pick(y for (i, y) in sortable_choices)
+    #sortable_choices = [(history.score(x['id']), x) for x in all_choices.values()]
+    #sortable_choices.sort(reverse=True, key=lambda (a, b): a)
+    choices_for_picking = [x for x in all_choices.values()]
+    choices_for_picking.sort(reverse=True, key=lambda x: history.score(x))
+    choice_id = frontend.pick(choices_for_picking)
     if choice_id is not None:
         history.update(choice_id)
         command = "%s &" % all_choices[choice_id]['cmd']

@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 
 
 import os
@@ -14,22 +14,22 @@ class Wizard:
         self.backend_dir = os.path.join(HOME, '.launchbear', 'backends')
 
     def print_welcome(self):
-        print
-        print "This script will take the user through setting"
-        print "up their personal preferences for launchbear."
-        print
+        print()
+        print("This script will take the user through setting")
+        print("up their personal preferences for launchbear.")
+        print()
 
     def create_config_dirs(self):
         if os.path.isdir(self.config_dir):
-            print "%s already exists" % self.config_dir
+            print("%s already exists" % self.config_dir)
         else:
             os.mkdir(self.config_dir)
-            print "created %s" % self.config_dir
+            print("created %s" % self.config_dir)
         if os.path.isdir(self.backend_dir):
-            print "%s already exists" % self.backend_dir
+            print("%s already exists" % self.backend_dir)
         else:
             os.mkdir(self.backend_dir)
-            print "created %s" % self.backend_dir
+            print("created %s" % self.backend_dir)
 
     def offer_to_symlink_backends_from(self, backend_src):
         for backend_name in os.listdir(backend_src):
@@ -37,26 +37,26 @@ class Wizard:
             dest = os.path.join(self.backend_dir, backend_name)
             answer = ''
             while answer not in ('y', 'n'):
-                print
-                print "Do you want to install %s?" % backend_name
+                print()
+                print("Do you want to install %s?" % backend_name)
                 prt = "[y]es, [n]o or [v]iew in your pager... "
-                answer = raw_input(prt).lower()[:1]
+                answer = input(prt).lower()[:1]
                 if answer == 'v':
                     PAGER = os.environ.get('PAGER', 'less')
                     subprocess.call([PAGER, src])
             if answer == 'y':
                 os.symlink(src, dest)
-                print "Created", dest
+                print("Created %s" % dest)
 
     def wipe_the_cache(self):
-        print
+        print()
         cache_file = os.path.join(self.config_dir, 'cache.pkl')
         if os.path.exists(cache_file):
             os.remove(cache_file)
-            print "Removed cache file", cache_file
+            print("Removed cache file %s" % cache_file)
         else:
-            print "There is no cache file"
-        print
+            print("There is no cache file")
+        print()
 
     def main(self):
         self.print_welcome()

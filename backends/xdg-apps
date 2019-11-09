@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 
 
 # This parses .desktop files used by the XDG spec.
@@ -11,7 +11,7 @@ import os
 
 
 def scan(location):
-    print "# Files in %s" % location
+    print("# Files in %s" % location)
     filenames = os.listdir(location)
     for filename in filenames:
         filepath = os.path.join(location, filename)
@@ -32,12 +32,12 @@ def use_desktop_file(filepath):
             continue
         properties[key] = value
     fileobj.close()
-    print " ".join((
+    print(" ".join((
         "addchoice",
         "--id='%s'" % filepath,
         "--title='%s'" % properties['Name'],
         "--cmd='%s'" % subst_cleanse(properties['Exec']),
-    ))
+    )))
 
 
 def subst_cleanse(command):
@@ -54,7 +54,7 @@ def subst_cleanse(command):
 
 
 def test_chars():
-    print "Testing"
+    print("Testing")
     assert subst_cleanse("foo bar baz") == "foo bar baz"
     assert subst_cleanse("foo %U baz") == "foo  baz"
 
@@ -73,5 +73,3 @@ def main():
 if __name__ == '__main__':
     main()
     #test_chars()
-
-
