@@ -1,3 +1,9 @@
+launchbear (1.0.4) UNRELEASED; urgency=medium
+
+  * Use HTTPS for home page URLs.
+
+ -- P. S. Clarke <debs@pscl4rke.net>  Sat, 09 Nov 2019 09:34:54 +0000
+
 launchbear (1.0.3) unstable; urgency=medium
 
   * Fix python2 dependency.
