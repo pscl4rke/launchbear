@@ -1,6 +1,7 @@
 launchbear (1.0.4) UNRELEASED; urgency=medium
 
   * Use HTTPS for home page URLs.
+  * Add .py file extensions.
 
  -- P. S. Clarke <debs@pscl4rke.net>  Sat, 09 Nov 2019 09:34:54 +0000
 

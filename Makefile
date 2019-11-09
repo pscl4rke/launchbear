@@ -8,8 +8,8 @@ dummy:
 
 install:
 	install -d $(DESTDIR)/usr/bin
-	install launchbear $(DESTDIR)/usr/bin/launchbear
-	install launchbear-wizard $(DESTDIR)/usr/bin/launchbear-wizard
+	install launchbear.py $(DESTDIR)/usr/bin/launchbear
+	install launchbear_wizard.py $(DESTDIR)/usr/bin/launchbear-wizard
 	install -d $(DESTDIR)/usr/share/launchbear/backends
 	install backends/* $(DESTDIR)/usr/share/launchbear/backends/.
 	install -d $(DESTDIR)/usr/share/man/man1
