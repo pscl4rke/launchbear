@@ -15,3 +15,6 @@ install:
 	install -d $(DESTDIR)/usr/share/man/man1
 	install launchbear.1 $(DESTDIR)/usr/share/man/man1/launchbear.1
 	install launchbear-wizard.1 $(DESTDIR)/usr/share/man/man1/launchbear-wizard.1
+
+test:
+	python2.7 -m unittest discover
