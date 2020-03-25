@@ -44,11 +44,15 @@ class Wizard:
             while answer not in ('y', 'n'):
                 print()
                 print("Do you want to install %s?" % backend_name)
-                prt = "[y]es, [n]o or [v]iew in your pager... "
+                prt = "[y]es, [n]o or use pager to [v]iew script or [p]review output? "
                 answer = input(prt).lower()[:1]
                 if answer == 'v':
                     PAGER = os.environ.get('PAGER', 'less')
                     subprocess.call([PAGER, src])
+                if answer == 'p':
+                    PAGER = os.environ.get('PAGER', 'less')
+                    preview = subprocess.Popen(src, stdout=subprocess.PIPE)
+                    subprocess.call([PAGER, "-"], stdin=preview.stdout)
             if answer == 'y':
                 os.symlink(src, dest)
                 self.changes_made.append(backend_name)
