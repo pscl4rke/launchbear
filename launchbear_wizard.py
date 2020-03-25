@@ -12,6 +12,7 @@ class Wizard:
         HOME = os.environ['HOME']
         self.config_dir = os.path.join(HOME, '.launchbear')
         self.backend_dir = os.path.join(HOME, '.launchbear', 'backends')
+        self.changes_made = []
 
     def print_welcome(self):
         print()
@@ -50,16 +51,20 @@ class Wizard:
                     subprocess.call([PAGER, src])
             if answer == 'y':
                 os.symlink(src, dest)
+                self.changes_made.append(backend_name)
                 print("Created %s" % dest)
 
     def wipe_the_cache(self):
         print()
+        if len(self.changes_made) == 0:
+            print("No changes made, so will not touch the cache file")
+            return
         cache_file = os.path.join(self.config_dir, 'cache.pkl')
         if os.path.exists(cache_file):
             os.remove(cache_file)
             print("Removed cache file %s" % cache_file)
         else:
-            print("There is no cache file")
+            print("There is no cache file that needs removing")
         print()
 
     def main(self):
