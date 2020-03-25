@@ -1,3 +1,11 @@
+launchbear (2.1.0) unstable; urgency=medium
+
+  * Wizard: Detect if symlinks already exist.
+  * Wizard: Only delete cache file if necessary.
+  * Wizard: Add 'p' option to preview backend output.
+
+ -- P. S. Clarke <debs@pscl4rke.net>  Wed, 25 Mar 2020 08:33:59 +0000
+
 launchbear (2.0.0) unstable; urgency=medium
 
   * Switch from Python 2 to Python 3.
