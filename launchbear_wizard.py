@@ -35,6 +35,10 @@ class Wizard:
         for backend_name in os.listdir(backend_src):
             src = os.path.join(backend_src, backend_name)
             dest = os.path.join(self.backend_dir, backend_name)
+            if os.path.exists(dest):
+                print()
+                print("You already have %s: Skipping" % backend_name)
+                continue
             answer = ''
             while answer not in ('y', 'n'):
                 print()
