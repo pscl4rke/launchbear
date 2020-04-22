@@ -1,0 +1,5 @@
+#!/bin/bash
+linkbear --list | grep '.*--.*' | while read name dashes desc; do
+    echo "addchoice --id='linkbear-$name' --title=\"$desc\"" \
+         "--cmd='linkbear --prompt $name'"
+done
