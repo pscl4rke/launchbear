@@ -64,8 +64,11 @@ def test_chars():
 
 def main():
     locations = [
+        # needs the menu-xdg package installed:
         "/var/lib/menu-xdg/applications/menu-xdg",
+        # default XDG specification locations:
         "/usr/share/applications/",
+        "/usr/local/share/applications/",
         os.environ['HOME'] + "/.local/share/applications",
     ]
     for location in locations:
