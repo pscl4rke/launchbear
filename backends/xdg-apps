@@ -18,7 +18,10 @@ def scan(location):
         if os.path.isdir(filepath):
             scan(filepath)
         elif filename.endswith(".desktop"):
-            use_desktop_file(filepath)
+            try:
+                use_desktop_file(filepath)
+            except Exception as exc:
+                print("# Cannot load %s: %r" % (filepath, exc))
         else:
             pass
 
