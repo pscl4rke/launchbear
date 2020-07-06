@@ -1,3 +1,9 @@
+launchbear (2.2.1) unstable; urgency=medium
+
+  * Backends: XDG: Fix to be more resilient.
+
+ -- P. S. Clarke <debs@pscl4rke.net>  Mon, 06 Jul 2020 19:39:24 +0100
+
 launchbear (2.2.0) unstable; urgency=medium
 
   * Backends: Add linkbear and remove srprompt.
