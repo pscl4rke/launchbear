@@ -159,9 +159,8 @@ def save_cachefile(cache, cache_path=None):
 
 
 def main():
-    homedir = os.environ['HOME']
-    backend_home = os.path.join(homedir, ".launchbear/backends")
-    backend_names = os.listdir(backend_home)
+    backend_home = "~/.launchbear/backends"
+    backend_names = os.listdir(os.path.expanduser(backend_home))
     cache = load_cachefile()
     history = HistoryFile()
     all_choices = {}
