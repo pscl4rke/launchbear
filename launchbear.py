@@ -12,10 +12,7 @@ allows them to be picked using a front-end.
 import os
 import shlex
 import subprocess
-try:
-    import cPickle as pickle
-except ImportError as e:
-    import pickle
+import pickle
 
 
 class HistoryFile:
@@ -192,5 +189,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
