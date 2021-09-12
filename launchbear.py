@@ -9,10 +9,12 @@ allows them to be picked using a front-end.
 """
 
 
+import argparse
 import os
 import shlex
 import subprocess
 import pickle
+import sys
 
 
 class HistoryFile:
@@ -155,9 +157,15 @@ def save_cachefile(cache, cache_path=None):
         pickle.dump(cache, cache_file)
 
 
+def parse_args(args):
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--backend-dir", default="~/.launchbear/backends")
+    return parser.parse_args(args)
+
+
 def main():
-    backend_home = "~/.launchbear/backends"
-    backend_names = os.listdir(os.path.expanduser(backend_home))
+    opts = parse_args(sys.argv[1:])
+    backend_names = os.listdir(os.path.expanduser(opts.backend_dir))
     cache = load_cachefile()
     history = HistoryFile()
     all_choices = {}
@@ -166,7 +174,7 @@ def main():
         if backend_name in cache['generators']:
             generator.load(cache['generators'][backend_name])
         else:
-            backend_location = os.path.join(backend_home, backend_name)
+            backend_location = os.path.join(opts.backend_dir, backend_name)
             process = subprocess.Popen(backend_location,
                         stdout=subprocess.PIPE, shell=True)
             infile = process.stdout

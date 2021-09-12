@@ -1,6 +1,7 @@
 launchbear (2.3.0) UNRELEASED; urgency=medium
 
   * Backends: XDG: Ignore XScreenSaver files.
+  * Add a -d flag to customise backend directory.
 
  -- P. S. Clarke <debs@pscl4rke.net>  Sun, 12 Sep 2021 16:55:45 +0100
 
