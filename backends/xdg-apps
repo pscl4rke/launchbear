@@ -17,6 +17,8 @@ def scan(location):
         filepath = os.path.join(location, filename)
         if os.path.isdir(filepath):
             scan(filepath)
+        elif "/screensavers/" in filepath:
+            continue
         elif filename.endswith(".desktop"):
             try:
                 use_desktop_file(filepath)
