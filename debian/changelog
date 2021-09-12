@@ -1,9 +1,10 @@
-launchbear (2.3.0) UNRELEASED; urgency=medium
+launchbear (2.3.0) unstable; urgency=medium
 
   * Backends: XDG: Ignore XScreenSaver files.
   * Add a -d flag to customise backend directory.
+  * Backends: Aisleriot: New backend for card games.
 
- -- P. S. Clarke <debs@pscl4rke.net>  Sun, 12 Sep 2021 16:55:45 +0100
+ -- P. S. Clarke <debs@pscl4rke.net>  Sun, 12 Sep 2021 21:49:04 +0100
 
 launchbear (2.2.1) unstable; urgency=medium
 

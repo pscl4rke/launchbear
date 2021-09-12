@@ -2,8 +2,8 @@ Source: launchbear
 Section: x11
 Priority: optional
 Maintainer: P. S. Clarke <debs@pscl4rke.net>
-Build-Depends: debhelper (>=9)
-Standards-Version: 3.9.7
+Build-Depends: debhelper (>=12)
+Standards-Version: 4.5.0
 Homepage: https://github.com/pscl4rke/launchbear
 
 Package: launchbear
