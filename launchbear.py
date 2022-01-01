@@ -143,7 +143,7 @@ def load_cachefile(cache_path=None):
     if cache_path is None:
         cache_path = default_cache_path()
     try:
-        with open(cache_path) as cache_file:
+        with open(cache_path, "rb") as cache_file:
             return pickle.load(cache_file)
     except Exception:
         return {'generators': {}}
