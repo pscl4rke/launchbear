@@ -1,11 +1,11 @@
 #!/bin/bash
 
 for fullpath in  /usr/lib/x86_64-linux-gnu/aisleriot/guile/*/*.go; do
-    game=$(basename "${fullpath%.go}")
+    filename=${fullpath##*/}
+    game=${filename%.go}
 
-    cat <<EOF
-# Found $fullpath
-addchoice --id="aisleriot-$game" --title="Play the $game solitaire card game" --cmd="sol -v $game"
-EOF
+    echo
+    echo "# Found $fullpath"
+    echo "addchoice --id='aisleriot-$game' --title='Play the $game solitaire card game' --cmd='sol -v $game'"
 
 done
