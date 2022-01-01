@@ -1,3 +1,10 @@
+launchbear (2.3.1) unstable; urgency=medium
+
+  * Cache: Fix bug that stopped it from working.
+  * Backends: Aisleriot: Fix speed issue.
+
+ -- P. S. Clarke <debs@pscl4rke.net>  Sat, 01 Jan 2022 22:25:13 +0000
+
 launchbear (2.3.0) unstable; urgency=medium
 
   * Backends: XDG: Ignore XScreenSaver files.
