@@ -51,10 +51,9 @@ class HistoryFile:
 class ChoiceGenerator:
     """A backend that provides a number of choices."""
 
-    def __init__(self, opts, backend_name):
+    def __init__(self, backend_location):
         """Create a new ChoiceGenerator."""
-        self._backend_name = backend_name
-        self.backend_location = os.path.join(opts.backend_dir, backend_name)
+        self._backend_location = backend_location
         self._choices = []
 
     def choices(self):
@@ -69,7 +68,7 @@ class ChoiceGenerator:
     def run_until_loaded(self):
         # these two parts could be separated so that each Popen is
         # run in parallel for improved responsiveness
-        self.process = subprocess.Popen(self.backend_location,
+        self.process = subprocess.Popen(self._backend_location,
                     stdout=subprocess.PIPE, shell=True)
         self.parse(self.process.stdout)
 
@@ -179,7 +178,8 @@ def main():
     history = HistoryFile()
     all_choices = {}
     for backend_name in backend_names:
-        generator = ChoiceGenerator(opts, backend_name)
+        backend_location = os.path.join(opts.backend_dir, backend_name)
+        generator = ChoiceGenerator(backend_location)
         if backend_name in cache['generators']:
             generator.load(cache['generators'][backend_name])
         else:
