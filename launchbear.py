@@ -112,6 +112,14 @@ class ChoiceGenerator:
 class DmenuFrontend:
     """A picker based around dmenu."""
 
+    def command(self):  # Gets overridden
+        return [
+            "dmenu", "-i", "-l", "6",
+            "-fn", "-*-arial-*-r-*-*-*-*-*-*-*-*-*",
+            "-nb", "#444", "-nf", "#DDD", "-sb", "#757",
+            "-p", "Run:",
+        ]
+
     def pick(self, choices):
         """Presents the choices and returns the id chosen or None."""
         lines = []
@@ -126,12 +134,7 @@ class DmenuFrontend:
                 continue
             parts.append("||| %s" % choice['id'])
             lines.append(" ".join(parts))
-        command = [
-            "dmenu", "-i", "-l", "6",
-            "-fn", "-*-arial-*-r-*-*-*-*-*-*-*-*-*",
-            "-nb", "#444", "-nf", "#DDD", "-sb", "#757",
-            "-p", "Run:",
-        ]
+        command = self.command()
         process = subprocess.Popen(command,
                     stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         stdout, stderr = process.communicate(("\n".join(lines)).encode())
@@ -139,6 +142,19 @@ class DmenuFrontend:
             return None
         rest, bars, choice_id = stdout.strip().decode().partition("||| ")
         return choice_id
+
+
+class WofiFrontend(DmenuFrontend):
+
+    def command(self):  # Overriding
+        return ["wofi", "-d", "-i"]
+
+
+def decide_on_frontend():
+    # FIXME This is a terrible way of doing things!
+    if os.path.exists("/usr/bin/wofi"):
+        return WofiFrontend()
+    return DmenuFrontend()
 
 
 def default_cache_path():
@@ -188,7 +204,7 @@ def main():
         choices_available = generator.choices()
         all_choices.update(choices_available)
     save_cachefile(cache)
-    frontend = DmenuFrontend()
+    frontend = decide_on_frontend()
     #sortable_choices = [(history.score(x['id']), x) for x in all_choices.values()]
     #sortable_choices.sort(reverse=True, key=lambda (a, b): a)
     choices_for_picking = [x for x in all_choices.values()]
