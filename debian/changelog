@@ -1,3 +1,9 @@
+launchbear (2.3.2) unstable; urgency=medium
+
+  * Crude Wofi Support
+
+ -- P. S. Clarke <debs@pscl4rke.net>  Sun, 30 Oct 2022 13:38:34 +0000
+
 launchbear (2.3.1) unstable; urgency=medium
 
   * Cache: Fix bug that stopped it from working.
