@@ -1,12 +1,13 @@
 #!/usr/bin/python3
 
-import sys
+
 import os
+
 
 conn_dir = "%s/.remmina" % os.environ['HOME']
 if not os.path.isdir(conn_dir):
-    print("# ERROR: %s does not exist" % conn_dir)
-    sys.exit(1)
+    raise Exception("# ERROR: %s does not exist" % conn_dir)
+
 
 for conn_filename in os.listdir(conn_dir):
     if not conn_filename.endswith(".remmina"):

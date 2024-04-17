@@ -1,6 +1,12 @@
 #!/bin/bash
 
-cat "$HOME/.gtk-bookmarks" | while read location name
+bookmarks="$HOME/.gtk-bookmarks"
+if [[ ! -e "$bookmarks" ]]; then
+    echo "Missing $bookmarks - Cannot continue" 1>&2
+    exit 1
+fi
+
+cat "$bookmarks" | while read location name
 do
     [ -z "$name" ] && name="$(basename $location)"
     echo -n "addchoice"
