@@ -34,11 +34,15 @@ class Wizard:
 
     def offer_to_symlink_backends_from(self, backend_src):
         for backend_name in os.listdir(backend_src):
+            print()
+            print("Backend: %s" % backend_name)
+            if backend_name.endswith(".attic"):
+                print("Attic file; skipped")
+                continue
             src = os.path.join(backend_src, backend_name)
             dest = os.path.join(self.backend_dir, backend_name)
             if os.path.exists(dest):
-                print()
-                print("You already have %s: Skipping" % backend_name)
+                print("Already installed; skipped")
                 continue
             answer = ''
             while answer not in ('y', 'n'):
