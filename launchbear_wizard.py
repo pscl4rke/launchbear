@@ -44,13 +44,13 @@ class Wizard:
             if os.path.exists(dest):
                 print("Already installed; skipped")
                 continue
-            try:  # find out if stupid errors in file
-                subprocess.check_call([src], stdout=subprocess.DEVNULL)
-            except Exception as exc:
-                print("ERROR RUNNING BACKEND: %r" % exc)
-                print("YOU PROBABLY DON'T WANT TO INSTALL THIS WHILE IT'S BROKEN!")
             answer = ''
             while answer not in ('y', 'n'):
+                try:  # find out if stupid errors in file
+                    subprocess.check_call([src], stdout=subprocess.DEVNULL)
+                except Exception as exc:
+                    print("ERROR RUNNING BACKEND: %r" % exc)
+                    print("YOU PROBABLY DON'T WANT TO INSTALL THIS WHILE IT'S BROKEN!")
                 print("Do you want to install %s?" % backend_name)
                 prt = "[y]es, [n]o or use pager to [v]iew script or [p]review output? "
                 answer = input(prt).lower()[:1]
