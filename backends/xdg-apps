@@ -40,9 +40,26 @@ def use_desktop_file(filepath):
     print(" ".join((
         "addchoice",
         "--id='%s'" % filepath,
-        "--title='%s'" % properties['Name'],
+        "--title='%s'" % build_title(properties),
         "--cmd='%s'" % subst_cleanse(properties['Exec']),
     )))
+
+
+def build_title(properties):
+    parts = []
+    for key in ("Name[en_GB]", "Name"):
+        if key in properties:
+            parts.append(properties[key])
+            break
+    for key in ("GenericName[en_GB]", "GenericName"):
+        if key in properties:
+            parts.append(properties[key])
+            break
+    for key in ("Comment[en_GB]", "Comment"):
+        if key in properties:
+            parts.append(properties[key])
+            break
+    return " // ".join(parts)
 
 
 def subst_cleanse(command):
