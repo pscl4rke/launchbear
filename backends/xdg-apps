@@ -56,8 +56,6 @@ def subst_cleanse(command):
     return "".join(outchars)
 
 
-
-
 def test_chars():
     print("Testing")
     assert subst_cleanse("foo bar baz") == "foo bar baz"
@@ -73,7 +71,12 @@ def main():
         "/usr/local/share/applications/",
         os.environ['HOME'] + "/.local/share/applications",
     ]
+    for datadir in os.environ.get("XDG_DATA_DIRS", "").split(":"):
+        appdir = os.path.join(datadir, "applications")
+        if appdir not in locations:
+            locations.append(appdir)
     for location in locations:
+        print("# Loading from %r" % location)
         if os.path.isdir(location):
             scan(location)
 
