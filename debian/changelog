@@ -1,3 +1,9 @@
+launchbear (2.3.4) unstable; urgency=medium
+
+  * Backends: XDG: Use $XDG_DATA_DIRS.
+
+ -- P. S. Clarke <debs@pscl4rke.net>  Mon, 10 Mar 2025 21:18:05 +0000
+
 launchbear (2.3.3) unstable; urgency=medium
 
   * Wizard: Test out whether scripts are runnable.
