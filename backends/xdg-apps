@@ -29,14 +29,15 @@ def scan(location):
 
 
 def use_desktop_file(filepath):
-    fileobj = open(filepath)
     properties = {}
-    for line in fileobj.readlines():
-        key, equals, value = line.strip().partition("=")
-        if equals != "=":
-            continue
-        properties[key] = value
-    fileobj.close()
+    with open(filepath) as fileobj:
+        for line in fileobj.readlines():
+            key, equals, value = line.partition("=")
+            if equals != "=":
+                continue
+            properties[key.strip()] = value.strip()
+    if properties.get("NoDisplay", "false") == "true":
+        return  # ignore mimetype association files etc
     print(" ".join((
         "addchoice",
         "--id='%s'" % filepath,
