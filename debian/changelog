@@ -1,3 +1,9 @@
+launchbear (2.3.5) unstable; urgency=medium
+
+  * Backends: XDG: Ignore when NoDisplay=true.
+
+ -- P. S. Clarke <debs@pscl4rke.net>  Fri, 16 May 2025 17:46:06 +0100
+
 launchbear (2.3.4) unstable; urgency=medium
 
   * Backends: XDG: Use $XDG_DATA_DIRS.
