@@ -5,6 +5,7 @@
 # NOTE: It does it *very* crudely, and consequently can't
 # handle one file containing multiple definitions.
 # e.g. /usr/share/applications/chromium-browser.desktop.
+# e.g. /usr/share/applications/libreoffice-startcenter.desktop
 
 
 import os
