@@ -9,6 +9,9 @@ allows them to be picked using a front-end.
 """
 
 
+import logging
+LOG = logging.getLogger("launchbear")
+
 import argparse
 import os
 import shlex
@@ -26,11 +29,13 @@ class HistoryFile:
         self.location = os.path.join(os.environ['HOME'], ".launchbear", "history")
         self.history = []
         try:
+            LOG.info("Loading history from: %r", self.location)
             with open(self.location) as infile:
                 for line in infile:
                     self.history.append(line.strip())
-        except IOError:
-            pass # presumably doesn't exist yet
+        except IOError as exc:
+            # Presumably doesn't exist yet
+            LOG.warning("Loading history failed: %r", exc)
 
     def update(self, choice_id):
         self.history.append(choice_id)
@@ -167,9 +172,11 @@ def load_cachefile(cache_path=None):
     if cache_path is None:
         cache_path = default_cache_path()
     try:
+        LOG.info("Loading cache from: %r", cache_path)
         with open(cache_path, "rb") as cache_file:
             return pickle.load(cache_file)
-    except Exception:
+    except Exception as exc:
+        LOG.warning("Loading cache failed: %r", exc)
         return {'generators': {}}
 
 
@@ -184,11 +191,14 @@ def save_cachefile(cache, cache_path=None):
 def parse_args(args):
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--backend-dir", default="~/.launchbear/backends")
+    parser.add_argument("-v", "--verbose", action="store_const", dest="logging_level",
+                        const="DEBUG", default="WARNING")
     return parser.parse_args(args)
 
 
 def main():
     opts = parse_args(sys.argv[1:])
+    logging.basicConfig(level=opts.logging_level)
     backend_names = os.listdir(os.path.expanduser(opts.backend_dir))
     cache = load_cachefile()
     history = HistoryFile()
@@ -197,8 +207,10 @@ def main():
         backend_location = os.path.join(opts.backend_dir, backend_name)
         generator = ChoiceGenerator(backend_location)
         if backend_name in cache['generators']:
+            LOG.info("Loading from cache: %r", backend_name)
             generator.load(cache['generators'][backend_name])
         else:
+            LOG.info("Running: %r", backend_name)
             generator.run_until_loaded()
             cache['generators'][backend_name] = generator.save()
         choices_available = generator.choices()
@@ -210,9 +222,11 @@ def main():
     choices_for_picking = [x for x in all_choices.values()]
     choices_for_picking.sort(reverse=True, key=lambda x: history.score(x))
     choice_id = frontend.pick(choices_for_picking)
+    LOG.info("Chosen: %r", choice_id)
     if choice_id is not None:
         history.update(choice_id)
         command = "%s &" % all_choices[choice_id]['cmd']
+        LOG.info("Running in shell: %r", command)
         subprocess.call(command, shell=True)
 
 
