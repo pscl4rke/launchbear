@@ -1,6 +1,14 @@
 #!/bin/bash
 
-for fullpath in  /usr/lib/x86_64-linux-gnu/aisleriot/guile/*/*.go; do
+guiledir="/usr/lib/x86_64-linux-gnu/aisleriot/guile"
+
+if [[ ! -e "$guiledir" ]]; then
+    echo "Cannot find $guiledir" 1>&2
+    echo "Is aisleriot even installed?" 1>&2
+    exit 1
+fi
+
+for fullpath in "$guiledir"/*/*.go; do
     filename=${fullpath##*/}
     game=${filename%.go}
 
