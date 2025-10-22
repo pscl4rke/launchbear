@@ -1,3 +1,10 @@
+launchbear (2.3.6) unstable; urgency=medium
+
+  * Add -v for verbose mode.
+  * Backends: Aisleriot: Handle when not installed.
+
+ -- P. S. Clarke <debs@pscl4rke.net>  Wed, 22 Oct 2025 18:17:43 +0100
+
 launchbear (2.3.5) unstable; urgency=medium
 
   * Backends: XDG: Ignore when NoDisplay=true.

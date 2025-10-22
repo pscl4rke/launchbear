@@ -18,3 +18,12 @@ install:
 
 test:
 	python3 -m unittest discover
+
+debfile:
+	@echo
+	@echo "This will build version $$(dpkg-parsechangelog --show-field Version)"
+	@read -p "Continue? [Enter/Ctrl-C]" smeg
+	@echo
+	debuild -us -uc
+	@echo
+	@echo "All built! - Look in the parent directory for the results"
